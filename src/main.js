@@ -1,23 +1,97 @@
-const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron');
+const { app, BrowserWindow, ipcMain, nativeTheme, Menu } = require('electron');
 const path = require('path');
 const fs = require('fs');
+
+const isMac = process.platform === 'darwin';
 
 // Set application name to sgdiray
 app.name = 'sgdiray';
 
 let mainWindow = null;
 
+function setupAppMenu() {
+  if (isMac) {
+    const template = [
+      {
+        label: app.name,
+        submenu: [
+          { role: 'about', label: `关于 ${app.name}` },
+          { type: 'separator' },
+          { role: 'services', label: '服务' },
+          { type: 'separator' },
+          { role: 'hide', label: `隐藏 ${app.name}` },
+          { role: 'hideOthers', label: '隐藏其他' },
+          { role: 'unhide', label: '显示全部' },
+          { type: 'separator' },
+          { role: 'quit', label: `退出 ${app.name}` }
+        ]
+      },
+      {
+        label: '编辑',
+        submenu: [
+          { role: 'undo', label: '撤销' },
+          { role: 'redo', label: '重做' },
+          { type: 'separator' },
+          { role: 'cut', label: '剪切' },
+          { role: 'copy', label: '复制' },
+          { role: 'paste', label: '粘贴' },
+          { role: 'selectAll', label: '全选' }
+        ]
+      },
+      {
+        label: '视图',
+        submenu: [
+          { role: 'reload', label: '重新加载' },
+          { role: 'forceReload', label: '强制重新加载' },
+          { role: 'toggleDevTools', label: '开发者工具' },
+          { type: 'separator' },
+          { role: 'resetZoom', label: '重置缩放' },
+          { role: 'zoomIn', label: '放大' },
+          { role: 'zoomOut', label: '缩小' },
+          { type: 'separator' },
+          { role: 'togglefullscreen', label: '切换全屏' }
+        ]
+      },
+      {
+        label: '窗口',
+        submenu: [
+          { role: 'minimize', label: '最小化' },
+          { role: 'zoom', label: '缩放' },
+          { type: 'separator' },
+          { role: 'front', label: '前置所有窗口' },
+          { type: 'separator' },
+          { role: 'close', label: '关闭' }
+        ]
+      }
+    ];
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+  } else {
+    Menu.setApplicationMenu(null);
+  }
+}
+
 function createWindow() {
+  const iconIcns = path.join(__dirname, '..', 'assets', 'icon.icns');
   const iconIco = path.join(__dirname, '..', 'assets', 'icon.ico');
   const iconPng = path.join(__dirname, '..', 'assets', 'icon.png');
-  const appIcon = fs.existsSync(iconIco) ? iconIco : (fs.existsSync(iconPng) ? iconPng : undefined);
+  
+  let appIcon;
+  if (isMac && fs.existsSync(iconIcns)) {
+    appIcon = iconIcns;
+  } else if (!isMac && fs.existsSync(iconIco)) {
+    appIcon = iconIco;
+  } else if (fs.existsSync(iconPng)) {
+    appIcon = iconPng;
+  }
 
   mainWindow = new BrowserWindow({
     width: 1280,
     height: 820,
     minWidth: 400,
     minHeight: 300,
-    frame: false, // Frameless window to remove default OS titlebar
+    frame: false, // Frameless window
+    titleBarStyle: isMac ? 'hidden' : undefined,
+    trafficLightPosition: isMac ? { x: 14, y: 9 } : undefined,
     show: false,
     icon: appIcon,
     backgroundColor: nativeTheme.shouldUseDarkColors ? '#202020' : '#ffffff',
@@ -190,6 +264,7 @@ app.on('web-contents-created', (event, contents) => {
 });
 
 app.whenReady().then(() => {
+  setupAppMenu();
   createWindow();
 
   app.on('activate', () => {

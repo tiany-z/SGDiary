@@ -125,3 +125,18 @@
   background-color: var(--uwp-close-active-bg);
   color: var(--uwp-close-hover-icon);
 }
+
+/* macOS Specific Styling */
+body.platform-mac {
+  --uwp-titlebar-height: 38px;
+}
+
+body.platform-mac .uwp-window-controls {
+  display: none !important;
+}
+
+body.platform-mac .uwp-titlebar {
+  height: var(--uwp-titlebar-height);
+  padding-left: 78px;
+}
+

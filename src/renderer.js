@@ -16,24 +16,33 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   let currentTheme = 'light';
 
+  const isMac = window.electronAPI && window.electronAPI.platform === 'darwin';
+  if (isMac) {
+    document.body.classList.add('platform-mac');
+  }
+
   // --- Window Controls ---
-  btnMinimize.addEventListener('click', () => {
-    window.electronAPI.minimize();
-  });
+  if (!isMac) {
+    btnMinimize.addEventListener('click', () => {
+      window.electronAPI.minimize();
+    });
 
-  btnMaximize.addEventListener('click', async () => {
-    const isMax = await window.electronAPI.toggleMaximize();
-    updateMaximizeIcon(isMax);
-  });
+    btnMaximize.addEventListener('click', async () => {
+      const isMax = await window.electronAPI.toggleMaximize();
+      updateMaximizeIcon(isMax);
+    });
 
-  btnClose.addEventListener('click', () => {
-    window.electronAPI.close();
-  });
+    btnClose.addEventListener('click', () => {
+      window.electronAPI.close();
+    });
+  }
 
-  // Double click drag region to maximize/restore
+  // Double click drag region to maximize/restore (works on both platforms)
   dragRegion.addEventListener('dblclick', async () => {
     const isMax = await window.electronAPI.toggleMaximize();
-    updateMaximizeIcon(isMax);
+    if (!isMac) {
+      updateMaximizeIcon(isMax);
+    }
   });
 
   function updateMaximizeIcon(isMaximized) {

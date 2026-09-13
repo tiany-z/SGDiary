@@ -2,6 +2,11 @@ const fs = require('fs');
 const path = require('path');
 
 function setupExecutable() {
+  if (process.platform !== 'win32') {
+    // Only Windows requires local custom sgdiray.exe mapping
+    return;
+  }
+
   const electronDistDir = path.join(__dirname, '..', 'node_modules', 'electron', 'dist');
   const originalExe = path.join(electronDistDir, 'electron.exe');
   const customExe = path.join(electronDistDir, 'sgdiray.exe');
