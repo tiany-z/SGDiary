@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SG Diary</title>
+  <link rel="stylesheet" href="styles/uwp-titlebar.css">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Microsoft Windows UWP Titlebar (Seamless adaptive top bar without icon or title) -->
+    <header class="uwp-titlebar" id="titlebar">
+      <!-- Full drag region to the left of window controls -->
+      <div class="uwp-drag-region" id="drag-region"></div>
+
+      <!-- UWP Window Control Buttons -->
+      <div class="uwp-window-controls">
+        <button class="uwp-control-btn" id="btn-minimize" title="最小化" aria-label="最小化">
+          <svg viewBox="0 0 10 10">
+            <line x1="0" y1="5.5" x2="10" y2="5.5" stroke="currentColor" stroke-width="1" />
+          </svg>
+        </button>
+
+        <button class="uwp-control-btn" id="btn-maximize" title="最大化" aria-label="最大化">
+          <!-- Maximize Icon (Single Square) -->
+          <svg viewBox="0 0 10 10" id="icon-maximize">
+            <rect x="0.5" y="0.5" width="9" height="9" stroke="currentColor" stroke-width="1" fill="none" />
+          </svg>
+          <!-- Restore Icon (Front square cleanly occludes rear square) -->
+          <svg viewBox="0 0 10 10" id="icon-restore" style="display: none;">
+            <path d="M2.5 2.5 V0.5 H9.5 V7.5 H7.5" stroke="currentColor" stroke-width="1" fill="none" />
+            <rect x="0.5" y="2.5" width="7" height="7" stroke="currentColor" stroke-width="1" fill="none" />
+          </svg>
+        </button>
+
+        <button class="uwp-control-btn close" id="btn-close" title="关闭" aria-label="关闭">
+          <svg viewBox="0 0 10 10">
+            <line x1="0.5" y1="0.5" x2="9.5" y2="9.5" stroke="currentColor" stroke-width="1" />
+            <line x1="9.5" y1="0.5" x2="0.5" y2="9.5" stroke="currentColor" stroke-width="1" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="content-container">
+      <div class="loading-bar" id="loading-bar"></div>
+
+      <!-- Error State -->
+      <div class="error-view" id="error-view">
+        <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+        <div class="error-title">无法连接到笔记服务</div>
+        <div class="error-desc">请检查网络连接后重试，页面地址：https://note.flynt.hk</div>
+        <button class="retry-btn" id="btn-retry">重新加载</button>
+      </div>
+
+      <!-- Embedded Webview -->
+      <webview 
+        id="web-view" 
+        src="https://note.flynt.hk" 
+        allowpopups
+        partition="persist:sgdiary"
+      ></webview>
+    </main>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

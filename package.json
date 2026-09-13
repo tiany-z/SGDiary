@@ -1,0 +1,68 @@
+{
+  "name": "sgdiray",
+  "productName": "sgdiray",
+  "version": "1.0.0",
+  "description": "SG Diary Desktop Application with Windows UWP Titlebar",
+  "main": "src/main.js",
+  "scripts": {
+    "postinstall": "node scripts/setup-executable.js && electron scripts/generate-icons.js",
+    "generate-icons": "electron scripts/generate-icons.js",
+    "start": "node scripts/start.js",
+    "start:default": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "hk.flynt.sgdiary",
+    "productName": "sgdiray",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "win": {
+      "icon": "assets/icon.ico",
+      "executableName": "sgdiray",
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "installerHeaderIcon": "assets/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "sgdiray"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "scripts/**/*",
+      "package.json"
+    ]
+  },
+  "keywords": [
+    "electron",
+    "uwp",
+    "diary"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^44.3.0",
+    "electron-builder": "^26.15.3"
+  }
+}

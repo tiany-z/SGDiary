@@ -1,0 +1,127 @@
+/* Microsoft Windows UWP Titlebar Styling */
+
+:root {
+  --uwp-titlebar-height: 32px;
+  --uwp-font-family: 'Segoe UI Variable Text', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  
+  /* Light Theme Default */
+  --uwp-bg: #f9f9f9;
+  --uwp-color: #1a1a1a;
+  --uwp-border: rgba(0, 0, 0, 0.08);
+  --uwp-btn-hover: rgba(0, 0, 0, 0.06);
+  --uwp-btn-active: rgba(0, 0, 0, 0.12);
+  --uwp-icon-color: #1a1a1a;
+  --uwp-close-hover-bg: #e81123;
+  --uwp-close-hover-icon: #ffffff;
+  --uwp-close-active-bg: #b32617;
+  --uwp-inactive-opacity: 0.6;
+}
+
+[data-theme="dark"] {
+  --uwp-bg: #202020;
+  --uwp-color: #ffffff;
+  --uwp-border: rgba(255, 255, 255, 0.08);
+  --uwp-btn-hover: rgba(255, 255, 255, 0.08);
+  --uwp-btn-active: rgba(255, 255, 255, 0.15);
+  --uwp-icon-color: #ffffff;
+  --uwp-close-hover-bg: #e81123;
+  --uwp-close-hover-icon: #ffffff;
+  --uwp-close-active-bg: #b32617;
+  --uwp-inactive-opacity: 0.5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --uwp-bg: #202020;
+    --uwp-color: #ffffff;
+    --uwp-border: rgba(255, 255, 255, 0.08);
+    --uwp-btn-hover: rgba(255, 255, 255, 0.08);
+    --uwp-btn-active: rgba(255, 255, 255, 0.15);
+    --uwp-icon-color: #ffffff;
+    --uwp-close-hover-bg: #e81123;
+    --uwp-close-hover-icon: #ffffff;
+    --uwp-close-active-bg: #b32617;
+    --uwp-inactive-opacity: 0.5;
+  }
+}
+
+.uwp-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--uwp-titlebar-height);
+  background-color: var(--uwp-bg);
+  color: var(--uwp-color);
+  font-family: var(--uwp-font-family);
+  font-size: 12px;
+  user-select: none;
+  -webkit-app-region: drag;
+  border-bottom: 1px solid var(--uwp-border);
+  box-sizing: border-box;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  z-index: 1000;
+  position: relative;
+}
+
+/* Inactive window state */
+.uwp-titlebar.inactive {
+  opacity: var(--uwp-inactive-opacity);
+}
+
+.uwp-drag-region {
+  flex: 1;
+  height: 100%;
+  -webkit-app-region: drag;
+  cursor: default;
+}
+
+/* Control Buttons Group */
+.uwp-window-controls {
+  display: flex;
+  height: 100%;
+  -webkit-app-region: no-drag;
+}
+
+.uwp-control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: default;
+  color: var(--uwp-icon-color);
+  transition: background-color 0.1s ease, color 0.1s ease;
+  padding: 0;
+  margin: 0;
+}
+
+.uwp-control-btn svg {
+  width: 10px;
+  height: 10px;
+  stroke: currentColor;
+  stroke-width: 1;
+  fill: none;
+  shape-rendering: crispEdges;
+}
+
+.uwp-control-btn:hover {
+  background-color: var(--uwp-btn-hover);
+}
+
+.uwp-control-btn:active {
+  background-color: var(--uwp-btn-active);
+}
+
+/* Close button specific styling */
+.uwp-control-btn.close:hover {
+  background-color: var(--uwp-close-hover-bg);
+  color: var(--uwp-close-hover-icon);
+}
+
+.uwp-control-btn.close:active {
+  background-color: var(--uwp-close-active-bg);
+  color: var(--uwp-close-hover-icon);
+}
